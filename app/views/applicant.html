@@ -1,0 +1,245 @@
+$def with (applicant, comments, votes, user, pager, inputs)
+
+$def show_actions():
+    $ to = dict(pending='No reference', new='review', admitted='Admitted', all='All Applicants', rejected='Rejected', search='Search', reviewed='My reviews')[inputs.context]
+    $#<a class="back" href="/$context?start=$pager.left_start&order=$order_selected&desc=$desc_selected&query=$query"><strong><< Back $to.lower()</strong></a>
+    <a class="back" href="/$inputs.context?$url_encode(inputs)"><strong>&laquo; Back $to.lower()</strong></a>
+    $if inputs.context in ['all', 'pending', 'rejected', 'new', 'search', 'reviewed']:
+        <input class="admit" type="button" value="Admit" 
+        onClick="document.theform.action = '/admit'; document.theform.submit();"/>
+    $if inputs.context in ['all', 'pending', 'admitted', 'new', 'search', 'reviewed']:
+        <input class="reject" type="button" value="Reject" 
+        onClick="document.theform.action = '/reject'; document.theform.submit();"/>
+    $if inputs.context in ['all', 'pending', 'admitted', 'rejected', 'new', 'search', 'reviewed']:
+        <input type="button" value="Undecide" 
+        onClick="document.theform.action = '/undecide'; document.theform.submit();"/>
+        
+    <select class="score" name="score"
+    onChange="document.theform.action = '/rate'; document.theform.submit();">
+    <option value="">Rate applicants</option>
+    <option value="" disabled="">---------------------------------------------------</option>
+    <option value="5">5 stars: definite accept,&nbsp;&nbsp;&nbsp;&nbsp;top 10%</option> 
+    <option value="4">4 stars: as many as we can,&nbsp;&nbsp;&nbsp;&nbsp;10%</option> 
+    <option value="3">3 stars: maybe,&nbsp;&nbsp;&nbsp;&nbsp;10%</option> 
+    <option value="2">2 stars: probably reject,&nbsp;&nbsp;&nbsp;&nbsp;20%</option> 
+    <option value="1">1 star: definitely reject,&nbsp;&nbsp;&nbsp;&nbsp;bottom  50%</option> 
+    </select>
+
+$def show_paging():            
+    $if pager.left:
+        $#<a href="/applicant/$pager.left.id?context=$context&start=$pager.left_start&order=$order_selected&desc=$desc_selected&query=$query">< Prev</a>
+        <a href="/applicant/$pager.left.id?$url_encode(inputs, start=pager.left_start)">&#8249; Previous</a>
+    $(pager.number + 1) of $pager.max_results
+    $if pager.right:
+        $#<a href="/applicant/$pager.right.id?context=$context&start=$pager.right_start&order=$order_selected&desc=$desc_selected&query=$query">Next ></a>
+        <a href="/applicant/$pager.right.id?$url_encode(inputs, start=pager.right_start)">Next &#8250;</a>
+
+$def show_stars(rating, color='', small=''):
+    $if small:
+        $ small = '_small'
+    
+    $for i in range(1,6):
+        $if rating >= i:
+            $if color == 'green':
+                <img src='/img/stars/full$(small)_green.gif'/>\
+            $else:
+                <img src='/img/stars/full$(small).gif'/>\
+        $else:
+            $if rating >= i - 0.5:
+                <img src='/img/stars/half$(small).gif'/>\
+            $else:
+                <img src='/img/stars/empty$(small).gif'/>\
+
+$def google_link(name, kind=''):
+    $ name = '"' + name + '"'
+    $if kind == 'scholar':
+        <a href="http://scholar.google.com/scholar?q=$url_quote(name)">scholar</a>        
+    $else:
+        <a href="http://www.google.com/search?q=$url_quote(name)">google</a>
+        
+$def cloud_link(name):
+    $ name = '(@author %s)' % sub('^(prof|doc|dr)[.\w]*', '', name)
+    $ dblp_domain = 'dblp.cloudmining.net'
+    <a class="cloud_link" href="http://$dblp_domain/search?query=$url_quote(name)">dblp cloud</a>        
+    
+<form name="theform" method="post">
+    <input type="hidden" name="context" value="$inputs.context">
+    <div class="actionbar">
+        $:show_actions()
+        
+        <span class="paging">
+        $:show_paging()
+        </span>
+    </div>
+    
+    <div class="result_wrapper">
+    <div class="applicant">
+        $ name = applicant.first_name + ' ' + applicant.last_name
+        <input type="hidden" name="id" value="$applicant.id">
+    	
+    	<h1>$name, $applicant.occupation</h1>
+    	<h2>$applicant.department, $applicant.affiliation</h2>
+        
+        $if applicant.affiliated: 
+    		<div class="affiliated">Affiliated to the university (no reference needed, no travel/accomodation support and charged a smaller fee).</div>
+        
+    	<div class="applicant_score">
+    	$if applicant.calculated_vote: 
+    		$:show_stars(applicant.calculated_vote) ($applicant.calculated_vote / 5) -  
+    	<strong>
+    	$if applicant.status == 'admitted':
+    		<img src="/img/accept.png"/> Admitted
+    	$elif applicant.status == 'rejected':
+    		<img src="/img/delete.png"/> Rejected
+    	$else:
+    		<img src="/img/error.png"/> Undecided
+    	</strong>
+    	$if applicant.decided_by_user_id:
+            by $applicant.nickname
+        </div>
+    	
+        $if votes:
+            <div class="applicant_score_details">
+            Rated $applicant.calculated_vote_counts times by 
+            $for vote in votes:
+                $vote.nickname $:show_stars(vote.score, small=True)
+                $if not loop.last: ,
+            </div>
+            
+        $if applicant.grant_amount:
+            <div class="scholarship">
+            <img src="/img/money.png"/> Allocated \$$applicant.grant_amount of financial support.
+            </div>
+
+    	<div class="simple_box">
+    		<a href="/resumes/$applicant.resume_fn"><strong>Download resume</strong></a> uploaded $how_long(applicant.creation_ts) - highest degree received is <strong>$applicant.degree</strong>. 
+        </div>
+    	
+    	<div class="simple_box">
+    	    Contact info:
+            $if applicant.website:
+                <a class="website" href='$applicant.website'>website</a> / 
+            <a href="mailto:$applicant.email">$applicant.email</a> / $:google_link(name) / $:google_link(name, 'scholar') / $:cloud_link(name)
+        </div>
+    	    
+    	<div class="simple_box">
+    		Interested in:
+            $for i in split('[,;:]+', applicant.interests):
+                <a class='animated' href="/search?query=$url_quote(i)">$i</a>&nbsp;
+        </div>
+        
+        <div class="simple_box">
+            Addtional info: 
+                $applicant.gender.capitalize() of nationality $applicant.nationality.capitalize() and country of affiliation $applicant.country.capitalize()
+                $if applicant.pascal_member: who is a pascal member
+        </div>
+    
+        $if applicant.travel_support:
+        	<div class="simple_box" id='travel_support'>
+                Financial support: This applicant needs \$$applicant.travel_support_budget.
+                $if applicant.grant_amount:
+                    Received <strong>\$$applicant.grant_amount</strong>.
+                
+                <div class="grant">
+                    <input type="text" name="amount" value="">
+                    <input type="button" value="Allocate" 
+                    onClick="document.theform.action = '/grant/$applicant.id'; document.theform.submit();"/>
+                </div>
+            </div>
+        
+        $if not applicant.affiliated or applicant.referee_email:
+            <div class="box">
+        		<div class="box_title">Referred by <strong>$applicant.referee_name</strong>, $applicant.referee_affiliation
+        		$if applicant.update_ts:
+        			on
+        			$how_long(applicant.update_ts) 
+        		</div> 
+                
+                <div class="sub_title">
+                    <a href="mailto:$applicant.referee_email">contact referee</a> / 
+                    $:google_link(applicant.referee_name) / $:google_link(applicant.referee_name, 'scholar') / $:cloud_link(applicant.referee_name)
+        		</div>
+                <div class="box_content">
+        			$if applicant.referee_rating:
+        				<div class="referee_score">$:show_stars(applicant.referee_rating, 'green')</div>
+        				$:text2html(applicant.reference)
+        			$else:
+        				Waiting for the referee to send the letter. (<strong>pending</strong>)
+                    
+                    $if not applicant.referee_rating:
+                        <p>The secret url to submit the reference for $name is: 
+                        <br/>
+                        <strong>
+                        <a href="http://$get_site_domain()/submit_reference/$applicant.secret_md5">
+                        http://$get_site_domain()/submit_reference/$applicant.secret_md5</a>
+                        </strong>
+                        </p>
+                    
+        		</div>	    
+        	</div>
+        
+        $if applicant.poster_title:
+            <div class="box">
+                <div class="box_title">Tentative poster title: <strong>$applicant.poster_title</strong></div>
+                $if applicant.abstract:
+                    <div class="box_content">
+                    $:text2html(applicant.abstract)
+                    </div>
+            </div>
+        
+        $if applicant.cover_letter:
+            <div class="box">
+                <div class="box_title">Additional comments in support of this application:</div>
+                <div class="box_content">
+                $:text2html(applicant.cover_letter)
+                </div>
+            </div>
+    </div>
+    
+    <div class="comments">
+        $ display_add_handle = 'block'
+        $if not comments:
+            $ display_add_handle = 'none'
+        
+            
+        <a id="add_handle" href="javascript: replace_elm('add_handle', 'add_comment');"
+        $if not comments:
+            style="display:none;"
+        >Add a comment</a>
+        
+    	<div id="add_comment" 
+        $if comments:
+            style="display:none;"
+        $else:
+            style="display:block;"
+        >
+    		<div class="box_title">Add a comment:</div>
+    		<textarea id="comment" name="comment"></textarea>
+    		<input type="button" value="Add comment" 
+    	        onClick="document.theform.action = '/applicant/$applicant.id/comment'; document.theform.submit();"/>
+    	</div>
+        
+        $for c in comments:
+            <div class="box">
+                <div class="box_title">
+            	<strong>$c.nickname</strong>, $how_long(c.creation_ts) 
+                $if user.is_logged and user.id == c.user_id:
+                    (<a href="/delete_comment/$c.id">delete</a>)
+                </div>
+                
+                <div class="box_content">
+                    $:text2html(c.comment)
+                </div>
+            </div>
+    </div>
+    
+    </div> 
+
+    <div class="actionbar">
+        $:show_actions()
+        
+        <span class="paging">
+        $:show_paging()
+        </span>
+    </div>
+</form>

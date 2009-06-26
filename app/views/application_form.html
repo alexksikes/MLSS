@@ -1,0 +1,44 @@
+$def with (form, success='')
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Machine Learning Summer School at Cambridge - Application</title>
+<link href="/css/application_forms.css" rel="stylesheet" type="text/css" />
+<link rel="icon" type="image/png" href="/img/favicon.ico" />
+</head>
+
+<body>
+
+<div class="submitted">
+$if success == 'False':
+    <p>Some <strong>error occured</strong>, <a href="/submit_application">go back</a> and try again. If the problem persists <a href="mailto:ak469@cam.ac.uk?subject=Report an error [MLSS website]">send us an email</a>. Thank you.</p>
+$elif success == 'True':
+    <p>Thank you for <strong>submitting your application</strong>. You should receive a confirmation email very soon.</p>
+    <p><a href="http://mlg.eng.cam.ac.uk/mlss09/index.html">Back to the Machine Learning Summer School website</a></p>
+</div>
+
+$if not success: 
+    <form method="post" enctype="multipart/form-data">
+        <p>Welcome to the <strong>Machine Learning Summer School</strong> at Cambridge University. Please fill out the form below to submit your application. All fields are required unless explicitly specified.</p>
+        <hr/>
+        $:render_form(form, 'first_name', 'resume')
+        <hr/>
+        $:render_form(form, 'pascal_member', 'cover_letter')
+        <hr/>
+        <p>Your referee will receive an email asking him or her to submit a letter of reference.</p>
+        $:render_form(form, 'referee_name', 'referee_affiliation')
+        <hr/>
+        <p>We have a limited number of <strong>scholarships</strong> to cover travel and/or registration expenses. These will be awarded preferably to accepted applicants who would not be otherwise able to attend (e.g. from developing countries, or departments with limited travel budgets). Acceptance to the summer school will be judged independently of financial need. If you wish to apply for financial support, please tick the checkbox and provide the following additional information.</p>
+        <ol>
+        <li>Your <strong>referee must provide a paragraph</strong> in their letter of recommendation justifying the need for financial support.</li>
+        
+        <li>Please give an <strong>estimate of the amount required</strong> (fees + travel expenses - amount available from other sources) below.</li>
+        </ol>
+        
+        $:render_form(form, 'travel_support', 'submit')
+    </form>
+
+</body>
+</html>

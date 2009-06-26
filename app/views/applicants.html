@@ -1,0 +1,178 @@
+$def with (results, context, pager, inputs)
+
+$# This is no longer used.
+$def show_sort_by():
+    $for order_name, order_by in [('Applicant Name', 'first_name'), ('Occupation', 'occupation'), ('Affiliation', 'affiliation'), ('Referee Rating', 'referee_rating'), ('Overall Rating', 'score'), ('Submission Date', 'creation_ts'), ('Status', 'status')]:
+        $ new_desc = dict(desc='asc', asc='desc')[inputs.desc]
+        $if order_by == inputs.order:
+            <a class="selected" href="/$context?$url_encode(inputs, desc=new_desc)">$order_name 
+            $# href="/$url_quote(inputs, order=order_by, desc=new_desc)"
+            $if inputs.desc == 'desc':
+                <small>&#9660;</small>
+            $else:
+                <small>&#9650;</small>
+            </a>
+        $else:
+            $#<a href="/$context?order=$order_by&desc=desc&query=$query">$order_name</a> 
+            <a href="/$context?$url_encode(inputs, order=order_by)">$order_name</a> 
+
+$def show_table_header():
+    <tr>
+    <th class="checkbox"></th>
+	$for order_name, order_by in [('ID', 'id'), ('Applicant Name', 'first_name'), ('Occupation', 'occupation'), ('Affiliation', 'affiliation'), ('Interests', 'interests'), ('FS ($)', 'travel_support_budget'), ('FSA ($)', 'grant_amount'), ('Referee Rating', 'referee_rating'), ('Comments', 'number_comments'), ('Overall Rating', 'calculated_vote'), ('Status', 'status')]:
+        $ new_desc = dict(desc='asc', asc='desc')[inputs.desc]
+        $if order_by == inputs.order:
+            <th id="$order_by"><a class="selected" href="/$context?$url_encode(inputs, start=0, desc=new_desc)">$order_name 
+            $if inputs.desc == 'desc':
+                <small>&#9660;</small>
+            $else:
+                <small>&#9650;</small>
+            </a></th>
+        $else:
+            <th id="$order_by"><a href="/$context?$url_encode(inputs, start=0, desc='desc', order=order_by)">$order_name</a></th>
+    </tr>
+            
+$def show_actions():
+    $if context in ['all', 'pending', 'rejected', 'new', 'search', 'reviewed']:
+        <input class="admit" type="button" value="Admit" 
+        onClick="document.theform.action = '/admit'; document.theform.submit();">
+    $if context in ['all', 'pending', 'admitted', 'new', 'search', 'reviewed']:
+        <input class="reject" type="button" value="Reject" 
+        onClick="document.theform.action = '/reject'; document.theform.submit();">
+    $if context in ['all', 'pending', 'admitted', 'rejected', 'new', 'search', 'reviewed']:
+        <input type="button" value="Undecide" 
+        onClick="document.theform.action = '/undecide'; document.theform.submit();">
+        
+    <select class="score" name="score"
+    onChange="document.theform.action = '/rate'; document.theform.submit();">
+    <option value="">Rate applicants</option>
+    <option value="" disabled="">---------------------------------------------------</option>
+    
+    <option value="5">5 stars: definite accept,&nbsp;&nbsp;&nbsp;&nbsp;top 10%</option> 
+    <option value="4">4 stars: as many as we can,&nbsp;&nbsp;&nbsp;&nbsp;10%</option> 
+    <option value="3">3 stars: maybe,&nbsp;&nbsp;&nbsp;&nbsp;10%</option> 
+    <option value="2">2 stars: probably reject,&nbsp;&nbsp;&nbsp;&nbsp;20%</option> 
+    <option value="1">1 star: definitely reject,&nbsp;&nbsp;&nbsp;&nbsp;bottom  50%</option> 
+    
+    </select>
+
+$def show_paging():            
+    $if pager.leftmost_a or pager.leftmost_a == 0:
+        <a href="/$context?$url_encode(inputs, start=pager.leftmost_a)">&laquo; Start</a>
+    $if pager.left_a or pager.left_a == 0:
+        <a href="/$context?$url_encode(inputs, start=pager.left_a)">&#8249; Previous</a>
+    $(pager.start + 1) - 
+    $if pager.right_a: 
+        $pager.right_a
+    $else:
+        $pager.max_results 
+    of $pager.max_results
+    $if pager.right_a:
+        <a href="/$context?$url_encode(inputs, start=pager.right_a)">Next &#8250;</a>
+    $if pager.rightmost_a:
+        <a href="/$context?$url_encode(inputs, start=pager.rightmost_a)">End &raquo;</a>
+
+$def show_stars(rating, color=''):
+    $for i in range(1,6):
+        $if rating >= i:
+            $if color == 'green':
+                <img src='/img/stars/full_small_green.gif'/>\
+            $else:
+                <img src='/img/stars/full_small.gif'/>\
+        $else:
+            $if rating >= i - 0.5:
+                <img src='/img/stars/half_small.gif'/>\
+            $else:
+                <img src='/img/stars/empty_small.gif'/>\
+    
+<form name="theform" method="post">
+<input type="hidden" name="context" value="$context">
+    <div class="actionbar">
+        $:show_actions()
+    
+    $if pager and pager.max_results:
+        <span class="paging">
+        $:show_paging()
+        </span>
+    </div>
+
+    <div class="results">
+    <table>
+    $:show_table_header()
+    $for r in results:
+        <tr class=
+        $if not r.status and (r.referee_rating or r.affiliated):
+            "updates"
+        >
+        <td class="checkbox"><input name="id" type="checkbox" value="$r.id" onclick="highlight_row(this)"></td>
+        <td>$r.id</td>
+		<td>
+        $ name = r.first_name + ' ' + r.last_name
+        <a href="/applicant/$r.id?$url_encode(inputs, context=context, start=pager.start)">$:cut_length(name, 20, tooltip=True)</a>
+        $if r.website:
+            - <a href="$r.website" title="homepage: $r.website"><img src="/img/external.png"/></a>
+        </td>
+        <td>$r.occupation</td>
+        <td>
+        $if r.affiliated:
+            <span class="affiliated" title="Affiliated to the university (no reference needed, no travel/accomodation support and charged a smaller fee).">$cut_length(r.affiliation, 25)</span>
+        $else:
+            $:cut_length(r.affiliation, 25, tooltip=True)
+        </td>
+        <td><em>$:cut_length(r.interests, 100, tooltip=True)</em></td>
+        <td class="score_column">
+        $if r.travel_support: 
+            \$$r.travel_support_budget
+        $else:
+            -
+        </td>
+        
+        <td class="score_column">
+        $if r.grant_amount: 
+            \$$r.grant_amount
+        $else:
+            -
+        </td>
+        
+        <td class="score_column">
+        $if not r.referee_rating:
+            -
+        $else:
+            <a title="Referred by $r.referee_name">$:show_stars(r.referee_rating, color='green')</a>
+        
+        <td class="score_column">
+		$if r.commenters:
+			<a title="Commented by $r.commenters"><img src="/img/comments.png"/> ($r.number_comments)</a>
+		$else:
+			- 
+		</td>
+        
+        <td class="score_column">
+		$if r.calculated_vote:
+			<a title="$r.calculated_vote / 5: rated by $r.voters">$:show_stars(r.calculated_vote) (out of $r.number_votes)</a>
+		$else:
+			- 
+		</td>
+        <td class="score_column">
+        $if r.status == 'admitted':
+            <a title="Admitted by $r.decided_by_nickname"><img src="/img/bullet_add.png"/></a>
+        $elif r.status == 'rejected':
+            <a title="Rejected by $r.decided_by_nickname"><img src="/img/bullet_delete.png"/></a>
+        $else:
+            -
+		</td>
+        
+        $#<td class="update_time">$how_long(r.creation_ts)</td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="actionbar">
+        $:show_actions()
+    
+    $if pager and pager.max_results:
+        <span class="paging">
+        $:show_paging()
+        </span>
+    </div>
+</form>

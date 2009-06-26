@@ -1,0 +1,24 @@
+BUG:
+- bug when no data in applicant table (add an applicant go to /submit_application).
+- paging by single result does not behave as exptected when adding a comment or a rating.
+
+QUICK:
+- dummy data useful for a demo.
+- update the source code link.
+- put explanation on resume.
+- test on IE (fix bug with form input rendering)
+
+MINOR ADDITIONS:
+- ratings could also be removed by the user if he wants to.
+- fix bug no data is in the applicants table.
+- trim out white spaces in references etc...
+
+MORE ADDITONS:
+
+- have flag country for affiliation and nationality (flag for affiliation could be next university field).
+>> use http://opencountrycodes.appspot.com/python/ and for icons //www.famfamfam.com/lab/icons/silk
+- integration with Google Checkout
+>> need SSL certificates, look into gchecky: http://code.google.com/p/gchecky/wiki/TutorialForLevel2
+- use Google Chart APIS (http://code.google.com/apis/chart/) for rough statistics of applicants (countries of admitted applicants, background ...)
+- automate emails sent to accepted / rejected / waiting list applicants.
+- lightbox (modal box) for signups. 

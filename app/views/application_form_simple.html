@@ -1,0 +1,34 @@
+$def with (form, success='')
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Machine Learning Summer School at Cambridge - Application</title>
+<link href="/css/application_forms.css" rel="stylesheet" type="text/css" />
+<link rel="icon" type="image/png" href="/img/favicon.ico" />
+</head>
+
+<body>
+
+<div class="submitted">
+$if success == 'False':
+    <p>Some <strong>error occured</strong>, <a href="/submit_application">go back</a> and try again. If the problem persists <a href="mailto:ak469@cam.ac.uk?subject=Report an error [MLSS website]">send us an email</a>. Thank you.</p>
+$elif success == 'True':
+    <p>Thank you for <strong>submitting your application</strong>. You should receive a confirmation email very soon.</p>
+    <p><a href="http://mlg.eng.cam.ac.uk/mlss09/index.html">Back to the Machine Learning Summer School website</a></p>
+</div>
+
+$if not success: 
+    <form method="post" enctype="multipart/form-data">
+        <p>Welcome to the <strong>Machine Learning Summer School</strong> at Cambridge University. Please fill out the form below to submit your application. All fields are required unless explicitly specified.</p>
+        <em class="important">This application is for local participants only who do not need housing and who are <strong>affiliated with the University of Cambridge or Microsoft Research Cambridge</strong>.</em>
+        <p>The fee is 200 pounds and does not include accommodation and meals. The deadline is July 1st 2009.</p>
+        <hr/>
+        $:render_form(form, 'affiliated', 'resume')
+        <hr/>
+        $:render_form(form, 'pascal_member', 'submit')
+    </form>
+
+</body>
+</html>

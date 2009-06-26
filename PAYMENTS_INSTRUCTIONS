@@ -1,0 +1,53 @@
+Here are the final instructions in order to process the payments for the MLSS:
+
+1) A feature was added to allocate money to applicants needing
+financial support. So go through each applicant needing financial
+support or maybe order the applicants by ratings and page through the
+results one by one allocating money as needed.
+
+2) Open a Google Checkout seller account for a given bank account:
+https://checkout.google.com/sell/ It's very easy to open an account.
+Use the mlss09cam@googlemail.com Google account to setup the account.
+
+3) I will then send you a list of admitted applicants containing the
+following fields:
+
+applicant email, name, affiliated with cambridge, industry
+researcher?, money given for financial support if any, money applicant
+has to pay
+
+The money the applicant has to pay depends on whether he was given
+financial support, is an industry researcher or is affiliated with
+Cambridge. Should this amount be in pounds or in dollars? The amount
+we asked for financial support was in dollars, so should I do the
+conversion?
+
+4) Go to Tools > Send an invoice on your newly created Google Checkout
+account. Send an email to each admitted applicant making sure the
+right amount due is put. There should probably be a paragraph
+explaining the amount due depending on whether the applicant received
+financial support, is an industry researcher or is affiliated with
+Cambridge. IMPORTANT make sure you check the option "Send me a copy of
+this email". This email is the only way we can keep track of whether
+the applicant has paid or not. There is also the Merchant admin
+(https://checkout.google.com/sell/orders) but I think there isn't an
+exact match between the applicant's email and the actual payee.
+
+5) I will send you coma separated list of all undecided applicant's
+emails (should we put these people on a waiting list?). The same with
+all rejected applicants. A group bcc email could be sent to each group
+using the MLSS Google email address.
+
+6) After some deadline we then go through the emails received by
+Google when a payment has been made. I could add a quick feature in
+the admin to mark that the applicant has actually paid which will be
+useful when making the badges. We can also start processing the
+applicants who are on the waiting list.
+
+This process could have been automatic using a low level API provided
+by Google but I ran out of time. However if the admin is used for
+subsequent MLSS then I'd be happy to add these features along with
+with some simple stats such as admitted applicants by countries,
+expertise etc ... as a pie.
+
+Alex

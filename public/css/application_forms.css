@@ -1,0 +1,88 @@
+/* defaults */
+body, h3, ul, li, form, ol {
+	margin: 0px;
+	padding: 0px;
+}
+
+body, form {
+    font-family: arial, sans-serif;
+    font-size: 13px;
+    line-height: 19px;
+}
+
+a {
+    color : #0000CC;
+}
+
+a img {
+	border: 0pt;
+}
+/* end of defaults */
+
+html {
+    background: #666666; /* #AFAFAF */
+}
+
+body {
+    width: 700px;
+    margin: 15px auto;
+    background: white;
+    padding: 10px 25px 25px;
+    -moz-border-radius: 7px;
+}
+
+.wrong {
+    color: red;
+    margin-left: 5px;
+}
+
+div.wrong {
+    margin: 15px 0px; 
+    border: 1px solid red; 
+    padding: 5px; 
+    font-weight: bold;
+}
+
+form label {
+    color: #0066CC;
+    display: block;
+    margin: 3px 0px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+form label.help {
+    color: #7F7F7F;
+    font-weight: normal;
+}
+
+form input, form textarea, form select {
+    margin-bottom: 25px;
+}
+
+textarea {
+    width: 500px;
+    height: 150px;
+}
+
+form #travel_support {
+    margin: 0px 5px 25px 0px;
+}
+
+form hr {
+    border: 1px dotted #7F7F7F;
+    margin-bottom: 25px;
+}
+
+form #interests, form #poster_title {
+    width: 350px;
+}
+
+form li {
+    list-style-position: inside;
+    margin: 15px 0px;
+}
+
+.important {
+    color: red;
+}

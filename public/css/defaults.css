@@ -1,0 +1,503 @@
+/* 
+- need some design clean up on comments, referee letter look
+*/
+
+/* defaults */
+body, h3, ul, li, form {
+	margin: 0px;
+	padding: 0px;
+}
+
+body, form {
+    font-family: arial, sans-serif;
+    font-size: 13px;
+}
+
+a {
+    color : #0000CC;
+}
+
+a img {
+	border: 0pt;
+}
+
+.default_form {
+    padding: 15px;
+    background-color : #DFDFDF;
+    -moz-border-radius: 10px;
+    float: left;
+    margin: 0px 20px;
+}
+
+.default_form label, .default_form input {
+    display: block;
+    margin: 3px 0px;
+}
+
+.default_form input {
+    width: 200px;
+}
+
+.wrong {
+    color: red;
+}
+
+.result_wrapper {
+    border-top : solid 5px #DFDFDF;
+    border-bottom : solid 5px #DFDFDF;
+    border-left : solid 5px #DFDFDF;
+	padding: 0px 10px;
+    overflow: auto;
+}
+
+.result_wrapper h1, h2, h3, h4 {
+    margin: 5px 0px;
+}
+
+.simple_box, .box {
+    padding: 5px;
+	margin: 10px 0px;
+	border: 1px solid #CFCFCF;
+	padding: 10px 5px;
+}
+
+.box {
+    background: #EFEFEF;
+}
+
+.box_title {
+    margin: 5px 0px;
+}
+
+.box .sub_title {
+    margin: 5px 0px;
+}
+
+.box_content {
+	background: white;
+	line-height: 19px;
+    padding: 5px;
+}
+
+/* end of defaults */
+
+a.selected {
+	text-decoration: none;
+	font-weight: bold;
+	color: #000000;
+}
+
+a.animated {
+    text-decoration: none;
+}
+
+a.animated:hover {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+/* top menu */
+.topmenu {
+    height : 25px;
+    line-height : 25px;
+    border-bottom : solid 1px #C0C0C0;
+    margin-bottom : 15px;
+    /* IE bug to have quicklinks on top */
+    position: relative;
+    z-index: 2;
+}
+
+.topmenu a {
+/*    margin-left : 10px;*/
+}
+
+li.logo {
+	position: relative;
+	top:3px;
+}
+
+ul.extlinks {
+	font-size: 12px;
+	margin: -2px 3px 0;
+	position: absolute;
+	right: 0px;
+	top: 3px;
+}
+
+ul.extlinks li {
+	display: inline;
+    border-right: 1px solid #C0C0C0;
+    padding: 0px 10px;
+}
+
+ul.extlinks li.last {
+    padding-right: 0px;
+    border: none;
+}
+
+li.login a {
+    text-decoration: none;
+    color: black;
+    font-size: 11px;
+}
+
+/* end of top menu */
+
+/* search box */
+.searchbar {
+    height : 25px;
+    line-height : 25px;
+    padding-left : 8%;
+    margin-bottom : 15px;
+}
+
+input.search {
+	width: 200px;
+}
+/* end of search box */
+
+/* left menu */
+.leftmenu {
+    float : left;
+    padding-top : 55px;
+    width : 8%;
+	font-size: 90%;
+}
+
+.leftmenu a {
+    display : block;
+    padding : 5px 10px 5px 5px;
+}
+
+.leftmenu .selected {
+    background-color : #DFDFDF;
+}
+
+#reviewed {
+    margin-top: 5px;
+    background: url(/img/comments.png) no-repeat 75px 2px; 
+}
+
+.selected#reviewed {
+    background-color : #DFDFDF;
+}
+/* end left menu */
+
+
+/* content div */
+.content {
+    float : left;
+    display: inline;
+    width : 92%;
+    border-top : solid 5px #DFDFDF;
+    border-bottom : solid 5px #DFDFDF;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-bottomleft: 10px;
+}
+/* end of content div */
+
+/* action bar */
+.actionbar {
+    position: relative;
+    height : 25px;
+    padding-left : 5px;
+    background-color : #DFDFDF;
+}
+
+.actionbar input {
+    width : 100px;
+    font-weight : bold;
+    margin-right : 5px;
+}
+
+.actionbar a {
+    margin-right : 10px;    
+}
+
+input.reject {
+    background-color : #CF0000;
+}
+
+input.admit {
+    background-color : #01AF00;
+}
+
+.paging a {
+    margin-right : 0px
+}
+
+.paging {
+    position : absolute;
+    top: 4px;
+    right: 5px;
+    font-weight: bold;
+}
+
+.score {
+    background-color: #FFE09F;
+}
+
+input.score {
+    width: 150px;
+}
+/* end of action bar */
+
+/* results */
+table {
+    /* IE need to apply at the table level */
+    empty-cells : show;
+    border-collapse : collapse;
+	width: 100%;
+}
+
+table td, table th {
+    font-size : 90%;
+    white-space : nowrap;
+    overflow : hidden;
+	table-layout: fixed;
+	padding-left: 10px;
+	max-width: 185px;
+/*	max-width: 350px; */
+    overflow: hidden;
+}
+
+th#calculated_vote, th#status, th#travel_support_budget, th#referee_rating, th#number_comments  {
+	text-align: center;
+}
+
+th#interests {
+    width: 40%;
+}
+
+td.score_column {
+	text-align: center;
+}
+
+td.score_column a {
+    color: black;
+    font-size: 9px;    
+}
+
+.results {
+    border-top : solid 5px #DFDFDF;
+    border-bottom : solid 5px #DFDFDF;
+    border-left : solid 5px #DFDFDF;
+    min-height : 200px;
+    height : auto;
+}
+
+/* for IE */
+* html .results, * html .result {
+    height : 200px;
+}
+
+.results tr {
+    height : 25px;
+    vertical-align : top;
+}
+
+.results td, .results th {
+    border-bottom : 1px dotted;
+    padding-top: 3px;
+}
+
+.results th {
+    font-size: 13px;
+    font-weight: normal;
+    background-color: #EFEFEF;
+    text-align: left;
+}
+
+.results td.checkbox {
+    padding-left: 0px;
+	width: 1px;
+}
+
+.results tr.updates {
+    font-weight : bold;
+}
+/* end of results */
+
+/* single result ie see an applicant */
+.back {
+	margin-left: 5px;
+}
+
+.applicant {
+    float: left;
+    width: 70%;
+}
+
+.comments {
+    float: right;
+    width: 29%;
+    margin-top: 20px;
+}
+
+#add_handle {
+    background: url(/img/comment_add.png) no-repeat left;
+/*    display: block;*/
+    margin-top: 10px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.comments .box {
+    background: #FADCB3;
+    border: 1px solid #EF9A2C;
+}
+
+.comments .box_title {
+    font-weight: normal;
+    background: url(/img/comment.png) no-repeat left;
+    padding-left: 20px;
+}
+
+.comments textarea{
+	width: 99%;
+    height : 100px;
+    font-family: arial, sans-serif;
+	display: block;
+    font-size: 13px;
+}
+
+#add_comment {
+    margin-bottom: 10px;
+}
+
+div.referee_score, div.applicant_score, div.applicant_score_details {
+	margin: 10px 0px;
+	padding: 0px;
+	border: none;
+}
+
+.applicant_score_details {
+    font-size: 10px;
+}
+
+.applicant_score img {
+	position: relative;
+	top: 2px;
+}
+
+.website {
+	background: url(/img/external.png) right no-repeat;
+	padding-right: 13px;
+}
+
+.applicant #travel_support {
+    border: 1px solid #FF2F2F;
+    background: #FF8F8F;
+}
+
+a.cloud_link {
+    background: url(/img/weather_cloudy.png) no-repeat right;
+    padding-right: 18px;
+}
+/* end of single result */
+
+/* copyright */
+.copyright {
+    -moz-border-radius-bottomleft: 10px;
+    background-color: #EFEFEF;
+    float: right;
+    font-size: 12px;
+    font-style: italic;
+    line-height: 22px;
+    padding-right: 10px;
+    text-align: right;
+    width: 290px;
+}
+
+.copyright strong {
+    font-style: normal;
+}
+/* copyright */
+
+/* settings */
+#content_settings .default_form {
+    margin: 10px 0px;
+    clear: both;
+    width: 300px;
+}
+
+#content_settings .default_form legend {
+/*    font-weight: bold;*/
+}
+/* end ofsettings */
+
+/* forgot password */
+.forgot_password_form {
+    clear: both;
+    margin-top: 20px;
+/*    position: absolute;
+    margin-top: 290px;*/
+}
+/* end forgot password */
+
+/* success message */
+.on_success_message {
+    font-weight: bold;
+    color: green;
+}
+/* end of success message */
+
+/* register, sign in and forgot password */
+body#account {
+    width: 600px;
+    margin: 0px auto;
+}
+
+#account .default_form {
+    width: 230px;
+}
+/* end of register, sign in and forgot password */
+
+/* how to use */
+#account .help {
+    line-height: 22px;
+}
+
+#account .help h1 {
+    font-size: 16px;
+    margin: 10px 0px;
+}
+/* how to use */
+
+/* affiliated */
+.affiliated {
+    background: url(/img/cambridge.png) no-repeat left;
+    padding-left: 20px;    
+}
+
+div.affiliated {
+    margin: 10px 0px;
+}
+/* affiliated */
+
+.grant {
+    margin-top: 10px;
+}
+
+/* stats */
+.stats {
+    position: absolute;
+    top: 58px;
+    right: 8px;
+}
+
+.stats .admitted{
+    background: url(/img/accept.png) no-repeat left;
+    padding-left: 20px;        
+}
+
+.stats .rejected{
+    background: url(/img/delete.png) no-repeat left;
+    padding-left: 20px;        
+}
+
+.stats .allocated_amount{
+    background: url(/img/money.png) no-repeat left;
+    padding-left: 20px;        
+}
+/* stats */

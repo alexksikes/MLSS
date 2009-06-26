@@ -1,0 +1,34 @@
+$def with (user_info, nickname_form, email_form, password_form, on_success_message='')
+    <div class="actionbar">
+        <strong>Settings:</strong>
+    </div>
+        
+    <div class="result_wrapper">
+    
+    <form method="post" class="default_form" action="/settings/change_nickname">
+        <fieldset>
+        <legend>Change your nickname:</legend>
+        Currently set to <strong>$user_info.nickname</strong>
+        $:nickname_form.render_css()
+        </fieldset>
+    </form>
+    
+    <form method="post" class="default_form" action="/settings/change_email">
+        <fieldset>
+        <legend>Change your email:</legend>
+        Currently set to <strong>$user_info.email</strong>
+        $:email_form.render_css()
+        </fieldset>
+    </form>
+    
+    <form method="post" class="default_form" action="/settings/change_password">
+        <fieldset>
+        <legend>Change your password:</legend>
+        <span class="on_success_message">$on_success_message</span>
+        $:password_form.render_css()
+        </fieldset>
+    </form>
+    
+    </div>
+    
+    <div class="actionbar"></div>

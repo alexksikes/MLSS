@@ -1,0 +1,31 @@
+$def with (form, applicant, success='')
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Machine Learning Summer School at Cambridge - Refer $applicant.first_name $applicant.last_name</title>
+<link href="/css/application_forms.css" rel="stylesheet" type="text/css" />
+<link rel="icon" type="image/png" href="/img/favicon.ico" />
+</head>
+
+<body>
+
+<div class="submitted">
+$if success == 'False' or not applicant:
+    <p>Some <strong>error occured</strong>, go back and try again. If the problem persists <a href="mailto:ak469@cam.ac.uk?subject=Report an error [MLSS website]">send us an email</a>. Thank you.</p>
+$elif success == 'True':
+    <p>Thank you for <strong>submitting your reference</strong>. You should receive a confirmation email very soon.</p>
+    <p><a href="http://mlg.eng.cam.ac.uk/mlss09/index.html">Back to the Machine Learning Summer School website</a></p></div>
+
+$if not success and applicant: 
+    <form method="post">
+        <p>Hello $capitalize_first(applicant.referee_name),</p> 
+        <p><strong>$applicant.first_name.capitalize() $applicant.last_name.capitalize()</strong> (<a href="mailto:$applicant.email">email</a>) has requested that you write a reference letter for attendance to the <a href="http://mlg.eng.cam.ac.uk/mlss09/index.html">Machine Learning Summer School</a> at Cambridge.</p>
+        <p>Please fill out the form below.</p>
+        <hr/>
+        $:form.render_css()
+    </form>
+
+</body>
+</html>

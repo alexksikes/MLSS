@@ -1,0 +1,32 @@
+$def with (show, login_form, register_form, forgot_password_form, on_success_message='')
+
+$if show in ['login_only', 'all']:
+    <form method="post" class="default_form" action="/account/login">
+        <fieldset>
+        <legend>Login:</legend>
+        $:login_form.render_css()
+        <input type="hidden" name="show" value="$show"/>
+        </fieldset>
+    </form>
+
+$if show in ['register_only', 'all']:
+    <form method="post" class="default_form" action="/account/register">
+        <fieldset>
+        $if show == 'all':
+            <legend>Or create an account:</legend>
+        $else:
+            <legend>Create an account:</legend>
+        $:register_form.render_css()
+        <input type="hidden" name="show" value="$show"/>
+        </fieldset>
+    </form>
+
+$if show in ['login_only', 'register_only', 'forgot_password_only', 'all']:
+    <form method="post" class="default_form forgot_password_form" action="/account/resend_password">
+        <fieldset>
+        <legend>Forgot your password?</legend>
+        <span class="on_success_message">$on_success_message</span>
+        $:forgot_password_form.render_css()
+        <input type="hidden" name="show" value="$show"/>
+        </fieldset>
+    </form>
