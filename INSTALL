@@ -48,6 +48,7 @@
     ...
 
 5) Setup your database: mysql -p mlss < ./schema.sql. Note you first need to create a database called mlss.
+If you want to try with sample data run: mysql -p mlss < ./data.sql
 
 6) Make sure lighttpd has write access to the directory ./public/resumes/
 You'd do something like this: sudo chgrp www-data ./public/resumes; chmod 775 ./public/resumes;
