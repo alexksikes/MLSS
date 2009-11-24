@@ -7,6 +7,7 @@ QUICK:
 - update the source code link.
 - put explanation on resume.
 - test on IE (fix bug with form input rendering)
+- need privacy terms
 
 MINOR ADDITIONS:
 - ratings could also be removed by the user if he wants to.
@@ -22,3 +23,4 @@ MORE ADDITONS:
 - use Google Chart APIS (http://code.google.com/apis/chart/) for rough statistics of applicants (countries of admitted applicants, background ...)
 - automate emails sent to accepted / rejected / waiting list applicants.
 - lightbox (modal box) for signups. 
+- grab applicant's photo id by crawling his website. Either using google api with face on or do simple heiristic of grabing first picture of certain dimension. Mouse over an applicant's name would then show his picture.

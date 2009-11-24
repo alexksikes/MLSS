@@ -51,3 +51,29 @@ with some simple stats such as admitted applicants by countries,
 expertise etc ... as a pie.
 
 Alex
+
+# SQL QUERIES FOR PAYMENTS:
+
+# Get all admitted applicants who are not industry researchers and not affiliates of the University.
+select 'Name', 'Email', 'Occupation', 'Score', 'Financial Support Allocated', 'Amount Due'  
+union  
+(select concat(first_name, ' ', last_name), email, occupation, calculated_vote, grant_amount as financial_support, 900 - grant_amount as amount_due from applicants where status = 'admitted' and occupation != 'Industry Researcher' and affiliated = 0 order by calculated_vote desc 
+into outfile 'students.txt' fields terminated by ',' optionally enclosed by '"');
+
+# Get all admitted applicants who are industry researchers and not affiliates of the University.
+select 'Name', 'Email', 'Occupation', 'Score', 'Financial Support Allocated', 'Amount Due'  
+union  
+(select concat(first_name, ' ', last_name), email, occupation, calculated_vote, grant_amount as financial_support, 1500 - grant_amount as amount_due from applicants where status = 'admitted' and occupation = 'Industry Researcher' and affiliated = 0 order by calculated_vote desc 
+into outfile 'industry.txt' fields terminated by ',' optionally enclosed by '"');
+
+# Get all affiliates of the University who have not been rejected.
+select 'Name', 'Email', 'Occupation', 'Score', 'Financial Support Allocated', 'Amount Due'  
+union  
+(select concat(first_name, ' ', last_name), email, occupation, calculated_vote, grant_amount as financial_support, 300 - grant_amount as amount_due from applicants where status is NULL and affiliated = 1 order by calculated_vote desc 
+into outfile 'affiliates.txt' fields terminated by ',' optionally enclosed by '"');
+
+# Get all applicants on the waiting list who are not affiliates of the University.
+select 'Name', 'Email', 'Occupation', 'Score'  
+union  
+(select concat(first_name, ' ', last_name), email, occupation, calculated_vote from applicants where status is NULL and affiliated = 0 order by calculated_vote desc 
+into outfile 'waiting.txt' fields terminated by ',' optionally enclosed by '"');
