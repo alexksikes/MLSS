@@ -1,10 +1,4 @@
 $def with (user_info, nickname_form, email_form, password_form, on_success_message='')
-    <div class="actionbar">
-        <strong>Settings:</strong>
-    </div>
-        
-    <div class="result_wrapper">
-    
     <form method="post" class="default_form" action="/settings/change_nickname">
         <fieldset>
         <legend>Change your nickname:</legend>
@@ -28,7 +22,3 @@ $def with (user_info, nickname_form, email_form, password_form, on_success_messa
         $:password_form.render_css()
         </fieldset>
     </form>
-    
-    </div>
-    
-    <div class="actionbar"></div>

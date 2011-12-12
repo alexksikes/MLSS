@@ -41,10 +41,10 @@ def render_settings(nickname_form=nickname_form(), email_form=email_form(), pass
     counts = applicants.get_counts()
     user = session.get_session()
     
-    return view.layout(
-        view.settings(user, nickname_form, email_form, password_form, on_success_message), 
-        user, 'settings', counts)
-
+    return view.base(
+        view.settings(user, nickname_form, email_form, password_form, on_success_message)
+    )
+	
 class index:
     @session.login_required
     def GET(self):

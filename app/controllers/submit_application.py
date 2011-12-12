@@ -209,6 +209,7 @@ class apply:
         # due a bug in webpy we have to do web.input(_unicode=False) 
         # when having a File input element in a form
         if not f.validates(web.input(_unicode=False)):
+            f.resume.value = '' # avoid utf8 codec error in new webpy version 
             return view.application_form(f)
         else:
             success = handle_post(f)
@@ -230,6 +231,7 @@ class apply_simple:
         # due a bug in webpy we have to do web.input(_unicode=False) 
         # when having a File input element in a form
         if not f.validates(web.input(_unicode=False)):
+            f.resume.value = '' # avoid utf8 codec error in new webpy version 
             return view.application_form_simple(f)
         else:
             success = handle_post(f, simple=True)
