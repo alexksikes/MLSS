@@ -391,7 +391,7 @@ div.referee_score, div.applicant_score, div.applicant_score_details {
 }
 
 a.cloud_link {
-    background: url(/img/weather_cloudy.png) no-repeat right;
+    background: url(/img/cloud_logo.png) no-repeat right;
     padding-right: 18px;
 }
 /* end of single result */

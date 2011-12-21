@@ -19,7 +19,7 @@ $def show_sort_by():
 $def show_table_header():
     <tr>
     <th class="checkbox"></th>
-	$for order_name, order_by in [('ID', 'id'), ('Applicant Name', 'first_name'), ('Occupation', 'occupation'), ('Affiliation', 'affiliation'), ('Interests', 'interests'), ('FS ($)', 'travel_support_budget'), ('FSA ($)', 'grant_amount'), ('Referee Rating', 'referee_rating'), ('Comments', 'number_comments'), ('Overall Rating', 'calculated_vote'), ('Status', 'status')]:
+    $for order_name, order_by in [('ID', 'id'), ('Applicant Name', 'first_name'), ('Occupation', 'occupation'), ('Affiliation', 'affiliation'), ('Interests', 'interests'), ('FS ($)', 'travel_support_budget'), ('FSA ($)', 'grant_amount'), ('Referee Rating', 'referee_rating'), ('Comments', 'number_comments'), ('Overall Rating', 'calculated_vote'), ('Status', 'status')]:
         $ new_desc = dict(desc='asc', asc='desc')[inputs.desc]
         $if order_by == inputs.order:
             <th id="$order_by"><a class="selected" href="/$context?$url_encode(inputs, start=0, desc=new_desc)">$order_name 
@@ -106,7 +106,7 @@ $def show_stars(rating, color=''):
         >
         <td class="checkbox"><input name="id" type="checkbox" value="$r.id" onclick="highlight_row(this)"></td>
         <td>$r.id</td>
-		<td>
+        <td>
         $ name = r.first_name + ' ' + r.last_name
         <a href="/applicant/$r.id?$url_encode(inputs, context=context, start=pager.start)">$:cut_length(name, 20, tooltip=True)</a>
         $if r.website:
@@ -141,18 +141,18 @@ $def show_stars(rating, color=''):
             <a title="Referred by $r.referee_name">$:show_stars(r.referee_rating, color='green')</a>
         
         <td class="score_column">
-		$if r.commenters:
-			<a title="Commented by $r.commenters"><img src="/img/comments.png"/> ($r.number_comments)</a>
-		$else:
-			- 
-		</td>
+        $if r.commenters:
+            <a title="Commented by $r.commenters"><img src="/img/comments.png"/> ($r.number_comments)</a>
+        $else:
+            - 
+        </td>
         
         <td class="score_column">
-		$if r.calculated_vote:
-			<a title="$r.calculated_vote / 5: rated by $r.voters">$:show_stars(r.calculated_vote) (out of $r.number_votes)</a>
-		$else:
-			- 
-		</td>
+        $if r.calculated_vote:
+            <a title="$r.calculated_vote / 5: rated by $r.voters">$:show_stars(r.calculated_vote) (out of $r.number_votes)</a>
+        $else:
+            - 
+        </td>
         <td class="score_column">
         $if r.status == 'admitted':
             <a title="Admitted by $r.decided_by_nickname"><img src="/img/bullet_add.png"/></a>
@@ -160,7 +160,7 @@ $def show_stars(rating, color=''):
             <a title="Rejected by $r.decided_by_nickname"><img src="/img/bullet_delete.png"/></a>
         $else:
             -
-		</td>
+        </td>
         
         $#<td class="update_time">$how_long(r.creation_ts)</td>
         </tr>
