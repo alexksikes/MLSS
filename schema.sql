@@ -43,7 +43,7 @@ create table applicants (
     creation_ts             timestamp default current_timestamp, 
     update_ts               timestamp,
     index(secret_md5)
-) engine=InnoDB charset ut8;
+) engine=InnoDB charset utf8;
 
 create table users (
     id                      int(11) not null auto_increment primary key,

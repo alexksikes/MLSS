@@ -4,7 +4,14 @@
 
 3) Download install webpy, follow instructions here: http://webpy.org/install.
 
-4) Setup lighttpd, here is a part your config file:
+4) Setup your database: mysql -p mlss < ./schema.sql. Note you first need to create a database called mlss.
+If you want to try with sample data run: mysql -p mlss < ./data.sql
+
+5) Go over your site settings ./config_example.py and rename this file ./config.py
+
+6) Now you can test it: python ./application.py
+
+7) Setup lighttpd for production use. Here is a part your config file:
 
     ...
 
@@ -47,12 +54,7 @@
 
     ...
 
-5) Setup your database: mysql -p mlss < ./schema.sql. Note you first need to create a database called mlss.
-If you want to try with sample data run: mysql -p mlss < ./data.sql
-
-6) Make sure lighttpd has write access to the directory ./public/resumes/
+8) Make sure lighttpd has write access to the directory ./public/resumes/
 You'd do something like this: sudo chgrp www-data ./public/resumes; chmod 775 ./public/resumes;
 
-7) Go over your site settings ./config_example.py and rename this file ./config.py
-
-8) Restart lighttpd and you're done.
+9) Restart lighttpd and you're done.
